@@ -1,9 +1,10 @@
 const body = document.getElementsByTagName("body");
-const botonCambiar = document.getElementById("boton-cambiar");
+const botonSiguiente = document.getElementById("boton-siguiente");
 const botonAtras = document.getElementById("boton-atras");
 const textoHex = document.getElementById("textoHex");
 const textoRGB = document.getElementById("textoRGB");
 let index = 0;
+let index2 = 0;
 let colorAnteriorRGB = ["R:0 G:0 B: 0"];
 let colorAnteriorHex = ["#000000"];
 let firstRed,
@@ -48,23 +49,30 @@ function generarColor() {
   return color;
 }
 
-botonCambiar.addEventListener("click", function () {
-  let colorAleatorio = generarColor();
-  body[0].style.backgroundColor = "#" + colorAleatorio;
-  textoHex.innerText = "#" + colorAleatorio;
-  textoRGB.innerText = conversionHexRGB(colorAleatorio);
-  colorAnteriorHex.push("#" + colorAleatorio);
-  colorAnteriorRGB.push(conversionHexRGB(colorAleatorio));
-  index++;
+botonSiguiente.addEventListener("click", function () {
+  if (index === index2) {
+    let colorAleatorio = generarColor();
+    body[0].style.backgroundColor = "#" + colorAleatorio;
+    textoHex.innerText = "#" + colorAleatorio;
+    textoRGB.innerText = conversionHexRGB(colorAleatorio);
+    colorAnteriorHex.push("#" + colorAleatorio);
+    colorAnteriorRGB.push(conversionHexRGB(colorAleatorio));
+    index++;
+    index2++;
+  } else {
+    index++;
+    let colorSiguienteHex = colorAnteriorHex[index];
+    let colorSiguienteRGB = colorAnteriorRGB[index];
+    body[0].style.backgroundColor = colorSiguienteHex;
+    textoHex.innerText = colorSiguienteHex;
+    textoRGB.innerText = colorSiguienteRGB;
+  }
 });
 
 botonAtras.addEventListener("click", function () {
-  if (colorAnteriorHex.length > 1) {
-    colorAnteriorRGB.pop();
-    colorAnteriorHex.pop();
+  if (index > 0) {
     index--;
   }
-  console.log(colorAnteriorHex.length);
   textoHex.innerText = colorAnteriorHex[index];
   textoRGB.innerText = colorAnteriorRGB[index];
   body[0].style.backgroundColor = colorAnteriorHex[index];
